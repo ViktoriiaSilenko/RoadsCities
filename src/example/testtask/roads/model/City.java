@@ -1,10 +1,10 @@
 package example.testtask.roads.model;
 
 import java.util.HashSet;
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class City {
 	
@@ -13,11 +13,11 @@ public class City {
 	private Set<Road> roads;
 	
 	public City(String name, Point coordinates) {
-		if (StringUtils.isBlank(name)) {
+		if (isBlank(name)) {
 			throw new IllegalArgumentException("City name should be not null and not blank");
 		} else {
 			this.name = name;
-			this.coordinates = Objects.requireNonNull(coordinates);
+			this.coordinates = requireNonNull(coordinates);
 			this.roads = new HashSet<>();
 		}
 	}
@@ -27,12 +27,7 @@ public class City {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		/*return this == obj ||
-				obj != null &&
-				obj.getClass() == getClass() &&
-						((City) obj).coordinates.equals(coordinates);*/
-		
+	public boolean equals(Object obj) {	
 		if (this == obj)
 			return true;
 		if (obj == null)

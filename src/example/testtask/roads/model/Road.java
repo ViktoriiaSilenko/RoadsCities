@@ -1,7 +1,7 @@
 package example.testtask.roads.model;
 
-import java.util.Objects;
-import org.apache.commons.lang.StringUtils;
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class Road {
 	private String name;
@@ -9,13 +9,12 @@ public class Road {
 	private City cityTo;
 	
 	public Road(String name, City cityFrom, City cityTo) {
-		if (StringUtils.isBlank(name)) {
+		if (isBlank(name)) {
 			throw new IllegalArgumentException("Road name should be not null and not blank");
-		} else {
-			this.name = name;
-			this.cityFrom = Objects.requireNonNull(cityFrom);
-			this.cityTo = Objects.requireNonNull(cityTo);
 		}
+		this.name = name;
+		this.cityFrom = requireNonNull(cityFrom);
+		this.cityTo = requireNonNull(cityTo);
 	}
 
 	public City getCityFrom() {
@@ -51,7 +50,4 @@ public class Road {
 	public String toString() {
 		return "Road [name=" + name + ", cityFrom=" + cityFrom + ", cityTo=" + cityTo + "]";
 	}
-	
-	
-
 }

@@ -6,8 +6,8 @@ public class Point {
 	private int y;
 	
 	public Point(int x, int y) {
-		if (x < 0 || x > Integer.MAX_VALUE || y < 0 || y > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("x or y < 0 or > " + Integer.MAX_VALUE);
+		if (x < 0 || y < 0) {
+			throw new IllegalArgumentException("x < 0 or y < 0");
 		}
 		this.x = x;
 		this.y = y;
@@ -18,9 +18,7 @@ public class Point {
 	}
 
 	public void setX(int x) {
-		if (x < 0 || x > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("x < 0 or > " + Integer.MAX_VALUE);
-		}
+		assertPositive(x);
 		this.x = x;
 	}
 
@@ -29,15 +27,12 @@ public class Point {
 	}
 
 	public void setY(int y) {
-		if (y < 0 || y > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("y < 0 or > " + Integer.MAX_VALUE);
-		}
+		assertPositive(y);
 		this.y = y;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -64,6 +59,12 @@ public class Point {
 	@Override
 	public String toString() {
 		return "Point [x=" + x + ", y=" + y + "]";
+	}
+	
+	private void assertPositive(int coordinate) {
+		if (coordinate < 0) {
+			throw new IllegalArgumentException("coordinate < 0");
+		}
 	}
 
 }

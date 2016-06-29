@@ -1,6 +1,7 @@
 package example.testtask.roads;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import example.testtask.roads.model.City;
@@ -24,7 +25,7 @@ public class Runner {
 		Road roadOther = new Road("road1", new City("Lviv", new Point (11, 21)), new City("Ternopil", new Point (101, 201)));
 		Road roadOther2 = new Road("road2", new City("Lviv1", new Point (210, 220)), new City("Ternopil1", new Point (210, 220)));
 		Road roadOther3 = new Road("road1", new City("Kyiv", new Point (10, 20)), new City("Kharkiv", new Point (10, 20)));
-		Set <Road> roads = new HashSet<>();
+		Set <Road> roads = new LinkedHashSet<>();
 		roads.add(road);
 		roads.add(roadOther);
 		roads.add(roadOther2);
@@ -41,6 +42,17 @@ public class Runner {
 		cities.add(city3);
 		cities.add(city4);
 		System.out.println(cities);
+		
+		
+		// experiment
+		Set <City> cities2 = new HashSet<>();
+		cities2.add(city4);
+		
+		cities2.add(city2);
+		cities2.add(city1);
+		
+		
+		System.out.println(cities.equals(cities2));
 
 	}
 

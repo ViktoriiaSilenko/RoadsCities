@@ -1,6 +1,6 @@
 package example.testtask.roads.model;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 import java.util.Set;
 
 public class MyMap {
@@ -8,8 +8,8 @@ public class MyMap {
 	private Set<Road> roads;
 	
 	public MyMap(Set<City> cities, Set<Road> roads) {
-		this.cities = Objects.requireNonNull(cities);
-		this.roads = Objects.requireNonNull(roads);
+		this.cities = requireNonNull(cities);
+		this.roads = requireNonNull(roads);
 	}
 
 	public Set<City> getCities() {
@@ -17,7 +17,7 @@ public class MyMap {
 	}
 
 	public void setCities(Set<City> cities) {
-		this.cities = Objects.requireNonNull(cities);
+		this.cities = requireNonNull(cities);
 	}
 
 	public Set<Road> getRoads() {
@@ -25,7 +25,7 @@ public class MyMap {
 	}
 
 	public void setRoads(Set<Road> roads) {
-		this.roads = Objects.requireNonNull(roads);
+		this.roads = requireNonNull(roads);
 	}
 
 }
