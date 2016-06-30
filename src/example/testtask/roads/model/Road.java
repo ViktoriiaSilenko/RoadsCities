@@ -41,10 +41,7 @@ public class Road {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + cityFrom.hashCode();
-		result = prime * result + cityTo.hashCode();
-		return result;
+		return prime * (cityFrom.hashCode() + cityTo.hashCode());
 	}
 
 	@Override

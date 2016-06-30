@@ -58,9 +58,6 @@ public class MapServiceImplTest {
 		Road invertRoad = new Road("road1Invert", cityKirovsk, cityTernopil);
 		Road road2 = new Road("road1", cityTernopil, cityKyiv);
 		
-		//City cityTernopil = new City("Ternopil", new Point (11, 21));
-		//City cityAnotherKirovsk = new City("Kirovsk", new Point (11, 210));
-		
 		Set<City> cities = new HashSet<> ();
 		cities.add(cityTernopil);
 		cities.add(cityKirovsk);
