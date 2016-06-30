@@ -29,7 +29,7 @@ public class City {
 	
 	public boolean addRoad(Road road) {
 		if(this.equals(road.getCityFrom()) || this.equals(road.getCityTo())) {
-			return getRoads().add(road);
+			return roads.add(road);
 		}
 		return false;
 	}
