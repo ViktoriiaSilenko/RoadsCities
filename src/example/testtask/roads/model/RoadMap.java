@@ -3,11 +3,11 @@ package example.testtask.roads.model;
 import static java.util.Objects.requireNonNull;
 import java.util.Set;
 
-public class MyMap {
+public class RoadMap {
 	private Set<City> cities;
 	private Set<Road> roads;
 	
-	public MyMap(Set<City> cities, Set<Road> roads) {
+	public RoadMap(Set<City> cities, Set<Road> roads) {
 		this.cities = requireNonNull(cities);
 		this.roads = requireNonNull(roads);
 	}

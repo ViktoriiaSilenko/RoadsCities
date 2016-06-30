@@ -3,14 +3,14 @@ package example.testtask.roads.service;
 import static java.util.Objects.requireNonNull;
 import java.util.Set;
 import example.testtask.roads.model.City;
-import example.testtask.roads.model.MyMap;
 import example.testtask.roads.model.Road;
+import example.testtask.roads.model.RoadMap;
 
 public class MapServiceImpl implements MapService {
 	
-	private MyMap map;
+	private RoadMap map;
 
-	public MapServiceImpl(MyMap map) {
+	public MapServiceImpl(RoadMap map) {
 		this.map = requireNonNull(map);
 	}
 
@@ -58,9 +58,7 @@ public class MapServiceImpl implements MapService {
 	
 	private void addRoadToCitiesRoads(Road road) {
 		for(City city : map.getCities()) {
-			if(city.equals(road.getCityFrom()) || city.equals(road.getCityTo())) {
-				city.getRoads().add(road);
-			}
+			city.addRoad(road);
 		}
 	}
 	

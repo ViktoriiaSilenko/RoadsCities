@@ -34,7 +34,8 @@ public class Road {
 		if (getClass() != obj.getClass())
 			return false;
 		Road other = (Road) obj;
-		return (other.cityFrom.equals(cityFrom) && other.cityTo.equals(cityTo)) || (other.cityFrom.equals(cityTo) && other.cityTo.equals(cityFrom));
+		return (other.cityFrom.equals(cityFrom) && other.cityTo.equals(cityTo)) 
+				|| (other.cityFrom.equals(cityTo) && other.cityTo.equals(cityFrom));
 	}
 	
 	@Override

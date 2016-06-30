@@ -1,5 +1,6 @@
 package example.testtask.roads.model;
 
+import java.util.Collections;
 import java.util.HashSet;
 import static java.util.Objects.requireNonNull;
 import java.util.Set;
@@ -23,7 +24,14 @@ public class City {
 	}
 
 	public Set<Road> getRoads() {
-		return roads;
+		return Collections.unmodifiableSet(roads);
+	}
+	
+	public boolean addRoad(Road road) {
+		if(this.equals(road.getCityFrom()) || this.equals(road.getCityTo())) {
+			return getRoads().add(road);
+		}
+		return false;
 	}
 
 	@Override
