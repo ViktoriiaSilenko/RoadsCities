@@ -9,6 +9,9 @@ public class Road {
 	private City cityTo;
 	
 	public Road(String name, City cityFrom, City cityTo) {
+		if (cityFrom.equals(cityTo)) {
+			throw new IllegalArgumentException("cityFrom and cityTo should be different");
+		}
 		if (isBlank(name)) {
 			throw new IllegalArgumentException("Road name should be not null and not blank");
 		}

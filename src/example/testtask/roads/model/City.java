@@ -1,17 +1,12 @@
 package example.testtask.roads.model;
 
-import java.util.Collections;
-import java.util.HashSet;
 import static java.util.Objects.requireNonNull;
-import java.util.Set;
-
 import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class City {
 	
 	private String name;
 	private Point coordinates;
-	private Set<Road> roads;
 	
 	public City(String name, Point coordinates) {
 		if (isBlank(name)) {
@@ -19,19 +14,7 @@ public class City {
 		} else {
 			this.name = name;
 			this.coordinates = requireNonNull(coordinates);
-			this.roads = new HashSet<>();
 		}
-	}
-
-	public Set<Road> getRoads() {
-		return Collections.unmodifiableSet(roads);
-	}
-	
-	public boolean addRoad(Road road) {
-		if(this.equals(road.getCityFrom()) || this.equals(road.getCityTo())) {
-			return roads.add(road);
-		}
-		return false;
 	}
 
 	@Override
@@ -55,5 +38,4 @@ public class City {
 	public String toString() {
 		return "City [name=" + name + ", coordinates=" + coordinates + "]";
 	}
-
 }

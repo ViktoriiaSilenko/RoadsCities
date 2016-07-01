@@ -10,5 +10,8 @@ public interface MapService {
 	boolean addRoad(Road road);
 	boolean removeCity(City city);
 	boolean removeRoad(Road road);
+	/**
+	 * получить по городу дороги, которые из этого города ведут
+	 */
 	Set<Road> getRoadsFromCity(City city);
 }
