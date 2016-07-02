@@ -214,12 +214,15 @@ public class MapServiceImplTest {
 		City cityTernopil = new City("Ternopil", new Point (118, 218));
 		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
 		City cityMoscow = new City("Moscow", new Point (119, 129));
+		City cityLviv = new City("Lviv", new Point (119, 229));
 		Road road1 = new Road("road1", cityTernopil, cityKirovsk);
 		Road road2 = new Road("road2", cityMoscow, cityTernopil);
 		Road road3 = new Road("road3", cityKirovsk, cityMoscow);
+		Road road4 = new Road("road4", cityLviv, cityMoscow);
 		mapService.addRoad(road1); // also added cities
 		mapService.addRoad(road2); // also added cities
 		mapService.addRoad(road3); // also added cities
+		mapService.addRoad(road4); // also added cities
 		
 		Set<Road> actual = mapService.getRoadsFromCity(new City("Ternopil3", new Point (5, 5)));
 		assertEquals(new HashSet<Road>(), actual);
@@ -228,6 +231,13 @@ public class MapServiceImplTest {
 		Set<Road> expected = new HashSet<Road>();
 		expected.add(road1);
 		expected.add(road2);
+		assertEquals(expected, actual);
+		
+		actual = mapService.getRoadsFromCity(cityMoscow);
+		expected = new HashSet<Road>();
+		expected.add(road2);
+		expected.add(road3);
+		expected.add(road4);
 		assertEquals(expected, actual);
 	}
 
