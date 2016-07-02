@@ -3,7 +3,9 @@ package example.testtask.roads.service;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import example.testtask.roads.model.City;
 import example.testtask.roads.model.Road;
@@ -24,10 +26,12 @@ public class MapServiceImpl implements MapService {
 	
 	private Set<City> cities;
 	private Set<Road> roads;
+	private Map<City, Set<Road>> roadsOfCity;
 	
 	public MapServiceImpl() {
-		cities = new HashSet<City> ();
-		roads = new HashSet<Road> ();
+		cities = new HashSet<>();
+		roads = new HashSet<>();
+		roadsOfCity = new HashMap<>();
 	}
 
 	public Set<City> getCities() {
@@ -47,11 +51,30 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public boolean addRoad(Road road) {
 		road = requireNonNull(road);
-		if (roads.add(road)) { // Пусть мы провели дорогу между городами, которые еще не добавлены
-			addCity(road.getCityFrom());
-			addCity(road.getCityTo());
+		if (roads.add(road)) { 
+			// Пусть мы провели дорогу между городами, которые еще не добавлены
+			City cityFrom = road.getCityFrom();
+			City cityTo = road.getCityTo();
+			addCity(cityFrom);
+			addCity(cityTo);
+			
+			addRoadToRoadsOfCity(cityFrom, road);
+			addRoadToRoadsOfCity(cityTo, road);
 		}
 		return false;
+	}
+	
+	private void addRoadToRoadsOfCity(City city, Road road) {
+		if (city.equals(road.getCityFrom()) || city.equals(road.getCityTo())) {
+			Set<Road> roads = roadsOfCity.get(city);
+			if (roads != null) {
+				roads.add(road);
+			} else {
+				Set<Road> roadsCity = new HashSet<>();
+				roadsCity.add(road);
+				roadsOfCity.put(city, roadsCity);
+			}
+		}
 	}
 
 	@Override
@@ -73,13 +96,12 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public Set<Road> getRoadsFromCity(City city) {
 		city = requireNonNull(city);
-		Set<Road> roadsFromCity = new HashSet<>();
-		for(Road road: roads) {
-			if(city.equals(road.getCityFrom()) || city.equals(road.getCityTo())) {
-				roadsFromCity.add(road);
-			}
+
+		Set<Road> roads = roadsOfCity.get(city);
+		if (roads != null) {
+			return roads;
 		}
-		return roadsFromCity;
+		return new HashSet<Road>();
 	}
 
 }
