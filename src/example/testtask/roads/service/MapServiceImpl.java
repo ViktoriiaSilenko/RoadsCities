@@ -1,7 +1,6 @@
 package example.testtask.roads.service;
 
 import static java.util.Objects.requireNonNull;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;

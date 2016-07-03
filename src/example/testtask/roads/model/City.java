@@ -9,7 +9,7 @@ public class City {
 	private Point coordinates;
 	
 	public City(String name, Point coordinates) {
-		new Validator().validateName(name);
+		Validator.checkNameForContent(name);
 		this.name = name;
 		this.coordinates = requireNonNull(coordinates);
 	}

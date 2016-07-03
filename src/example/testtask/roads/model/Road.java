@@ -9,9 +9,8 @@ public class Road {
 	private City cityTo;
 	
 	public Road(String name, City cityFrom, City cityTo) {
-		Validator validator = new Validator();
-		validator.validateCities(cityFrom, cityTo);
-		validator.validateName(name);
+		Validator.checkCitiesForDifference(cityFrom, cityTo);
+		Validator.checkNameForContent(name);
 		this.name = name;
 		this.cityFrom = requireNonNull(cityFrom);
 		this.cityTo = requireNonNull(cityTo);
