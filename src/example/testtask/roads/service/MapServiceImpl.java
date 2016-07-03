@@ -38,19 +38,12 @@ public class MapServiceImpl implements MapService {
 		return Collections.unmodifiableSet(cities);
 	}
 
-	/**
-	 * Добавить новый город. Дорога определяется именем и координатами. Города отличаются координатами
-	 */
 	@Override
 	public boolean addCity(City city) {
 		city = requireNonNull(city);
 		return cities.add(city);
 	}
 
-	/**
-	 * Добавить новую дорогу. Дорога определяется именем и двумя городами, между которыми она проведена.
-	 * Дорога добавится в мультимапу городов на множество дорог, через которые они проходят
-	 */
 	@Override
 	public boolean addRoad(Road road) {
 		road = requireNonNull(road);
@@ -61,9 +54,6 @@ public class MapServiceImpl implements MapService {
 		return roadAddedToCityFrom || roadAddedToCityTo;
 	}
 
-	/**
-	 * Удалить город. Удаление города означает удаление дорог, в которых он учавствует
-	 */
 	@Override
 	public boolean removeCity(City city) {
 		city = requireNonNull(city);
@@ -78,9 +68,6 @@ public class MapServiceImpl implements MapService {
 		return false;
 	}
 
-	/**
-	 * Удалить дорогу
-	 */
 	@Override
 	public boolean removeRoad(Road road) {
 		road = requireNonNull(road);
@@ -90,9 +77,6 @@ public class MapServiceImpl implements MapService {
 		return roadRemovedFromCityFrom || roadRemovedFromCityTo;
 	}
 
-	/**
-	 * Получить по городу дороги, которые из этого города ведут
-	 */
 	@Override
 	public Set<Road> getRoadsFromCity(City city) {
 		return Collections.unmodifiableSet(roadsOfAllCity.get(city));

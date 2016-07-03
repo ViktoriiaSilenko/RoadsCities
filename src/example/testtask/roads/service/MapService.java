@@ -1,17 +1,49 @@
 package example.testtask.roads.service;
 
 import java.util.Set;
-
 import example.testtask.roads.model.City;
 import example.testtask.roads.model.Road;
 
 public interface MapService {
-	boolean addCity(City city); 
-	boolean addRoad(Road road);
-	boolean removeCity(City city);
-	boolean removeRoad(Road road);
+	
 	/**
-	 * получить по городу дороги, которые из этого города ведут
+	 * Добавить новый город. Дорога определяется именем и координатами. Города отличаются координатами
+	 * 
+	 * @param city - добавляемый город
+	 * @return true - если город был добавлен к множеству городов
+	 */
+	boolean addCity(City city); 
+	
+	/**
+	 * Добавить новую дорогу. Дорога определяется именем и двумя городами, между которыми она проведена.
+	 * Дорога добавится в мультимапу городов на множество дорог, через которые они проходят
+	 * 
+	 * @param road - добавляемая дорога
+	 * @return true - если дорога была добавлена к хотя бы одному из городов
+	 */
+	boolean addRoad(Road road);
+	
+	/**
+	 * Удалить город. Удаление города означает удаление дорог, в которых он учавствует
+	 * 
+	 * @param city - удаляемый город
+	 * @return true - если город был удален из множества городов
+	 */
+	boolean removeCity(City city);
+	
+	/**
+	 * Удалить дорогу. Удаление дороги означает ее удаление из городов, в которых она учавствует (т.е. из своего начального и конечного городов)
+	 * 
+	 * @param road - удаляемая дорога
+	 * @return true - если дорога была удалена из хотя бы одного города
+	 */
+	boolean removeRoad(Road road);
+	
+	/**
+	 * Получить по городу дороги, которые из этого города ведут
+	 * 
+	 * @param city - город, для которого ищем дороги
+	 * @return множество дорог, в которых учавствует город
 	 */
 	Set<Road> getRoadsFromCity(City city);
 }
