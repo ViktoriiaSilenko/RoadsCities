@@ -1,8 +1,6 @@
 package example.testtask.roads.model;
 
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import example.testtask.roads.service.Validator;
 
 public class Road {
