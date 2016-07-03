@@ -1,7 +1,6 @@
 package example.testtask.roads.service;
 
 import static java.util.Objects.requireNonNull;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,66 +23,79 @@ import example.testtask.roads.model.Road;
 
 public class MapServiceImpl implements MapService {
 	
-	private Set<City> cities;
-	private Set<Road> roads;
-	SetMultimap<City, Road> roadsOfCity;
+	private Set<City> cities; //все города
+	private SetMultimap<City, Road> roadsOfAllCity; //мультимапа городов на множество дорог, через которые они проходят
 	
 	public MapServiceImpl() {
 		cities = new HashSet<>();
-		roads = new HashSet<>();
-		roadsOfCity = HashMultimap.create();
+		roadsOfAllCity = HashMultimap.create();
 	}
 
+	/**
+	 * Получить список всех городов в системе
+	 */
 	public Set<City> getCities() {
 		return Collections.unmodifiableSet(cities);
 	}
 
-	public Set<Road> getRoads() {
-		return Collections.unmodifiableSet(roads);
-	}
-
+	/**
+	 * Добавить новый город. Дорога определяется именем и координатами. Города отличаются координатами
+	 */
 	@Override
 	public boolean addCity(City city) {
 		city = requireNonNull(city);
 		return cities.add(city);
 	}
 
+	/**
+	 * Добавить новую дорогу. Дорога определяется именем и двумя городами, между которыми она проведена.
+	 * Дорога добавится в мультимапу городов на множество дорог, через которые они проходят
+	 */
 	@Override
 	public boolean addRoad(Road road) {
 		road = requireNonNull(road);
-		if (roads.add(road)) { 
-			// Пусть мы провели дорогу между городами, которые еще не добавлены
-			City cityFrom = road.getCityFrom();
-			City cityTo = road.getCityTo();
-			addCity(cityFrom);
-			addCity(cityTo);
-			
-			roadsOfCity.put(cityFrom, road);
-			roadsOfCity.put(cityTo, road);
-			return true;
-		}
-		return false;
+		Validator.checkRoadConnectsExistingCities(road, cities);
+		boolean roadAddedToCityFrom = roadsOfAllCity.put(road.getCityFrom(), road);
+		boolean roadAddedToCityTo = roadsOfAllCity.put(road.getCityTo(), road);
+		
+		return roadAddedToCityFrom || roadAddedToCityTo;
 	}
 
+	/**
+	 * Удалить город. Удаление города означает удаление дорог, в которых он учавствует
+	 */
 	@Override
 	public boolean removeCity(City city) {
 		city = requireNonNull(city);
 		if (cities.remove(city)) {
-			roads.removeAll(getRoadsFromCity(city));
+			Set<Road> roadsFromCity = getRoadsFromCity(city);
+			
+			for (Road road: roadsFromCity) {
+				removeRoad(road);
+			}
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * Удалить дорогу
+	 */
 	@Override
 	public boolean removeRoad(Road road) {
 		road = requireNonNull(road);
-		return roads.remove(road);
+		boolean roadRemovedFromCityFrom = roadsOfAllCity.get(road.getCityFrom()).remove(road);
+		boolean roadRemovedFromCityTo = roadsOfAllCity.get(road.getCityTo()).remove(road);
+		
+		return roadRemovedFromCityFrom || roadRemovedFromCityTo;
 	}
 
+	/**
+	 * Получить по городу дороги, которые из этого города ведут
+	 */
 	@Override
 	public Set<Road> getRoadsFromCity(City city) {
-		return roadsOfCity.get(city);
+		return Collections.unmodifiableSet(roadsOfAllCity.get(city));
 	}
 
 }
