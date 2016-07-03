@@ -6,7 +6,7 @@ import example.testtask.roads.model.City;
 
 public class Validator {
 	
-	private Validator() { //empty - prevent construction
+	private Validator() { 
 	}
 	
 	public static void checkNameForContent(String name) {

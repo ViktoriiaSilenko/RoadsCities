@@ -59,6 +59,7 @@ public class MapServiceImpl implements MapService {
 			
 			addRoadToRoadsOfCity(cityFrom, road);
 			addRoadToRoadsOfCity(cityTo, road);
+			return true;
 		}
 		return false;
 	}

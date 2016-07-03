@@ -66,6 +66,7 @@ public class MapServiceImplTest {
 	}
 	
 	//********************
+	
 	@Test(expected = NullPointerException.class)
 	public void testAddRoadForNullCity() {
 		mapService.addRoad(null);
@@ -107,6 +108,8 @@ public class MapServiceImplTest {
 		assertEquals(false, actual);
 	}
 
+	//********************
+	
 	@Test(expected = NullPointerException.class)
 	public void testRemoveCityForNullCity() {
 		mapService.removeCity(null);
@@ -155,6 +158,8 @@ public class MapServiceImplTest {
 		Set<Road> roads = mapService.getRoads();
 		assertEquals(false, roads.contains(road1));
 	}
+	
+	//********************
 
 	@Test(expected = NullPointerException.class)
 	public void testRemoveRoadForNullRoad() {
@@ -203,6 +208,8 @@ public class MapServiceImplTest {
 		assertEquals(true, cities.contains(cityTernopil));
 		assertEquals(true, cities.contains(cityKirovsk));
 	}
+	
+	//********************
 
 	@Test(expected = NullPointerException.class)
 	public void testGetRoadsFromCityForNullCity() {

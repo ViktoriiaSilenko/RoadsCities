@@ -10,8 +10,8 @@ public class City {
 	
 	public City(String name, Point coordinates) {
 		Validator.checkNameForContent(name);
-		this.name = name;
 		this.coordinates = requireNonNull(coordinates);
+		this.name = name;
 	}
 
 	@Override

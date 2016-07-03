@@ -11,9 +11,9 @@ public class Road {
 	public Road(String name, City cityFrom, City cityTo) {
 		Validator.checkCitiesForDifference(cityFrom, cityTo);
 		Validator.checkNameForContent(name);
-		this.name = name;
 		this.cityFrom = requireNonNull(cityFrom);
 		this.cityTo = requireNonNull(cityTo);
+		this.name = name;
 	}
 
 	public City getCityFrom() {
