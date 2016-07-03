@@ -1,7 +1,7 @@
 package example.testtask.roads.model;
 
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang.StringUtils.isBlank;
+import example.testtask.roads.service.Validator;
 
 public class City {
 	
@@ -9,12 +9,9 @@ public class City {
 	private Point coordinates;
 	
 	public City(String name, Point coordinates) {
-		if (isBlank(name)) {
-			throw new IllegalArgumentException("City name should be not null and not blank");
-		} else {
-			this.name = name;
-			this.coordinates = requireNonNull(coordinates);
-		}
+		new Validator().validateName(name);
+		this.name = name;
+		this.coordinates = requireNonNull(coordinates);
 	}
 
 	@Override

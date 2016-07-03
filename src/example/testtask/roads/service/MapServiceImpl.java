@@ -65,15 +65,13 @@ public class MapServiceImpl implements MapService {
 	}
 	
 	private void addRoadToRoadsOfCity(City city, Road road) {
-		if (city.equals(road.getCityFrom()) || city.equals(road.getCityTo())) {
-			Set<Road> roads = roadsOfCity.get(city);
-			if (roads != null) {
-				roads.add(road);
-			} else {
-				Set<Road> roadsCity = new HashSet<>();
-				roadsCity.add(road);
-				roadsOfCity.put(city, roadsCity);
-			}
+		Set<Road> roads = roadsOfCity.get(city);
+		if (roads != null) {
+			roads.add(road);
+		} else {
+			Set<Road> roadsCity = new HashSet<>();
+			roadsCity.add(road);
+			roadsOfCity.put(city, roadsCity);
 		}
 	}
 

@@ -1,14 +1,14 @@
 package example.testtask.roads.model;
 
+import example.testtask.roads.service.Validator;
+
 public class Point {
 	
 	private int x;
 	private int y;
 	
 	public Point(int x, int y) {
-		if (x < 0 || y < 0) {
-			throw new IllegalArgumentException("x < 0 or y < 0");
-		}
+		new Validator().validateCoordinates(x, y);
 		this.x = x;
 		this.y = y;
 	}

@@ -3,18 +3,17 @@ package example.testtask.roads.model;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
+import example.testtask.roads.service.Validator;
+
 public class Road {
 	private String name;
 	private City cityFrom;
 	private City cityTo;
 	
 	public Road(String name, City cityFrom, City cityTo) {
-		if (cityFrom.equals(cityTo)) {
-			throw new IllegalArgumentException("cityFrom and cityTo should be different");
-		}
-		if (isBlank(name)) {
-			throw new IllegalArgumentException("Road name should be not null and not blank");
-		}
+		Validator validator = new Validator();
+		validator.validateCities(cityFrom, cityTo);
+		validator.validateName(name);
 		this.name = name;
 		this.cityFrom = requireNonNull(cityFrom);
 		this.cityTo = requireNonNull(cityTo);
