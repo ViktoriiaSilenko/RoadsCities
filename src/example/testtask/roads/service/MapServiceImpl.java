@@ -1,11 +1,12 @@
 package example.testtask.roads.service;
 
 import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import example.testtask.roads.model.City;
 import example.testtask.roads.model.Road;
 
@@ -25,12 +26,12 @@ public class MapServiceImpl implements MapService {
 	
 	private Set<City> cities;
 	private Set<Road> roads;
-	private Map<City, Set<Road>> roadsOfCity;
+	SetMultimap<City, Road> roadsOfCity;
 	
 	public MapServiceImpl() {
 		cities = new HashSet<>();
 		roads = new HashSet<>();
-		roadsOfCity = new HashMap<>();
+		roadsOfCity = HashMultimap.create();
 	}
 
 	public Set<City> getCities() {
@@ -57,22 +58,11 @@ public class MapServiceImpl implements MapService {
 			addCity(cityFrom);
 			addCity(cityTo);
 			
-			addRoadToRoadsOfCity(cityFrom, road);
-			addRoadToRoadsOfCity(cityTo, road);
+			roadsOfCity.put(cityFrom, road);
+			roadsOfCity.put(cityTo, road);
 			return true;
 		}
 		return false;
-	}
-	
-	private void addRoadToRoadsOfCity(City city, Road road) {
-		Set<Road> roads = roadsOfCity.get(city);
-		if (roads != null) {
-			roads.add(road);
-		} else {
-			Set<Road> roadsCity = new HashSet<>();
-			roadsCity.add(road);
-			roadsOfCity.put(city, roadsCity);
-		}
 	}
 
 	@Override
@@ -93,13 +83,7 @@ public class MapServiceImpl implements MapService {
 
 	@Override
 	public Set<Road> getRoadsFromCity(City city) {
-		city = requireNonNull(city);
-
-		Set<Road> roads = roadsOfCity.get(city);
-		if (roads != null) {
-			return roads;
-		}
-		return new HashSet<Road>();
+		return roadsOfCity.get(city);
 	}
 
 }

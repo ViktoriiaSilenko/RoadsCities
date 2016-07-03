@@ -211,9 +211,8 @@ public class MapServiceImplTest {
 	
 	//********************
 
-	@Test(expected = NullPointerException.class)
 	public void testGetRoadsFromCityForNullCity() {
-		mapService.getRoadsFromCity(null);
+		assertEquals(new HashSet<Road>() , mapService.getRoadsFromCity(null));
 	}
 	
 	@Test
