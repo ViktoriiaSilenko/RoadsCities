@@ -73,6 +73,22 @@ public class MapServiceImplTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	public void testAddRoadWithNotExistingCityFrom() {
+		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
+		mapService.addCity(cityKirovsk);
+		
+		mapService.addRoad(new Road("road", new City("Tomsk", new Point(100, 300)), cityKirovsk));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddRoadWithNotExistingCityTo() {
+		City cityTernopil = new City("Ternopil", new Point (118, 218));
+		mapService.addCity(cityTernopil);
+		
+		mapService.addRoad(new Road("road", cityTernopil, new City("Tomsk", new Point(100, 300))));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddRoadWithSameCities() {
 		mapService.addRoad(new Road("road", 
 				new City("Moscow", new Point(100, 200)), new City("Moscow1", new Point(100, 200))));
@@ -98,11 +114,14 @@ public class MapServiceImplTest {
 	public void testAddRoadAndInvertRoad() {
 		City cityTernopil = new City("Ternopil", new Point (118, 218));
 		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
-
-		mapService.addRoad(new Road("road1", cityTernopil, cityKirovsk));
-		Set<City> cities = mapService.getCities();
-		assertEquals(true, cities.contains(cityKirovsk));
-		assertEquals(true, cities.contains(cityTernopil));
+		mapService.addCity(cityTernopil);
+		mapService.addCity(cityKirovsk);
+		
+		Road road = new Road("road", cityTernopil, cityKirovsk);
+		mapService.addRoad(road);
+		
+		assertEquals(true, mapService.getRoadsFromCity(road.getCityFrom()).contains(road));
+		assertEquals(true, mapService.getRoadsFromCity(road.getCityTo()).contains(road));
 		
 		boolean actual = mapService.addRoad(new Road("road1Invert", cityKirovsk, cityTernopil));
 		assertEquals(false, actual);
@@ -117,12 +136,17 @@ public class MapServiceImplTest {
 	
 	@Test
 	public void testRemoveNotExistCity() {
-		Road road = new Road("road", new City("Ternopil", 
-				new Point (118, 218)), new City("Kirovsk", new Point (19, 29)));
-		mapService.addRoad(road); // also added cities
-		boolean actual = mapService.removeCity(new City("Moscow", new Point (119, 129)));
+		City cityTernopil = new City("Ternopil", new Point (118, 218));
+		mapService.addCity(cityTernopil); 
+		boolean actual = mapService.removeCity(new City("Ternopil", new Point (119, 129)));
 		assertEquals(false, actual);
-		assertEquals(true, mapService.getRoads().contains(road));
+	}
+	
+	@Test
+	public void testRemoveCityWithSameCoordinates() {
+		mapService.addCity(new City("Ternopil", new Point (118, 218)));
+		boolean actual = mapService.removeCity(new City("Ternopil2", new Point (118, 218)));
+		assertEquals(true, actual);
 	}
 	
 	@Test
@@ -130,33 +154,29 @@ public class MapServiceImplTest {
 		City cityTernopil = new City("Ternopil", new Point (118, 218));
 		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
 		City cityMoscow = new City("Moscow", new Point (119, 129));
+		mapService.addCity(cityTernopil);
+		mapService.addCity(cityKirovsk);
+		mapService.addCity(cityMoscow);
+		
 		Road road1 = new Road("road1", cityTernopil, cityKirovsk);
 		Road road2 = new Road("road2", cityTernopil, cityMoscow);
-		Road road3 = new Road("road2", cityKirovsk, cityMoscow);
-		mapService.addRoad(road1); // also added cities
-		mapService.addRoad(road2); // also added cities
-		mapService.addRoad(road3); // also added cities
+		Road road3 = new Road("road3", cityKirovsk, cityMoscow);
+		mapService.addRoad(road1); 
+		mapService.addRoad(road2); 
+		mapService.addRoad(road3); 
 		
 		boolean actual = mapService.removeCity(cityTernopil);
 		assertEquals(true, actual);
 		
-		Set<Road> roads = mapService.getRoads();
-		assertEquals(false, roads.contains(road1));
-		assertEquals(false, roads.contains(road2));
-		assertEquals(true, roads.contains(road3));
-	}
-	
-	@Test
-	public void testRemoveCityWithSameCoordinates() {
-		Road road1 = new Road("road1", new City("Ternopil", 
-				new Point (118, 218)), new City("Kirovsk", new Point (19, 29)));
-		mapService.addRoad(road1); // also added cities
-
-		boolean actual = mapService.removeCity(new City("Ternopil2", new Point (118, 218)));
-		assertEquals(true, actual);
+		actual = mapService.getCities().contains(cityTernopil);
+		assertEquals(false, actual);
 		
-		Set<Road> roads = mapService.getRoads();
-		assertEquals(false, roads.contains(road1));
+		assertEquals(new HashSet<Road>(), mapService.getRoadsFromCity(cityTernopil));
+	
+		actual = mapService.getRoadsFromCity(cityKirovsk).contains(road1);
+		assertEquals(false, actual);
+		actual = mapService.getRoadsFromCity(cityMoscow).contains(road2);
+		assertEquals(false, actual);
 	}
 	
 	//********************
@@ -171,42 +191,40 @@ public class MapServiceImplTest {
 		City cityTernopil = new City("Ternopil", new Point (118, 218));
 		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
 		City cityMoscow = new City("Moscow", new Point (119, 129));
-		Road road1 = new Road("road1", cityTernopil, cityKirovsk);
-		mapService.addRoad(road1); // also added cities
+		mapService.addCity(cityTernopil);
+		mapService.addCity(cityKirovsk);
+		mapService.addCity(cityMoscow);
+		
+		mapService.addRoad(new Road("road1", cityTernopil, cityKirovsk));
 		boolean actual = mapService.removeRoad(new Road("road2", cityTernopil, cityMoscow));
 		assertEquals(false, actual);
-		Set<City> cities = mapService.getCities();
-		assertEquals(true, cities.contains(cityTernopil));
-		assertEquals(true, cities.contains(cityKirovsk));
-		assertEquals(false, cities.contains(cityMoscow));
-	}
-	
-	@Test
-	public void testRemoveRoad() {
-		City cityTernopil = new City("Ternopil", new Point (118, 218));
-		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
-		Road road = new Road("road1", cityTernopil, cityKirovsk);
-		mapService.addRoad(road); // also added cities
-		boolean actual = mapService.removeRoad(road);
-		assertEquals(true, actual);
-		
-		Set<City> cities = mapService.getCities();
-		assertEquals(true, cities.contains(cityTernopil));
-		assertEquals(true, cities.contains(cityKirovsk));
 	}
 	
 	@Test
 	public void testRemoveInvertRoad() {
 		City cityTernopil = new City("Ternopil", new Point (118, 218));
 		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
-		Road road = new Road("road", cityTernopil, cityKirovsk);
-		mapService.addRoad(road); // also added cities
+		mapService.addCity(cityTernopil);
+		mapService.addCity(cityKirovsk);
+		
+		mapService.addRoad(new Road("road", cityTernopil, cityKirovsk));
 		boolean actual = mapService.removeRoad(new Road("invert", cityKirovsk, cityTernopil));
 		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testRemoveRoad() {
+		City cityTernopil = new City("Ternopil", new Point (118, 218));
+		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
+		mapService.addCity(cityTernopil);
+		mapService.addCity(cityKirovsk);
 		
-		Set<City> cities = mapService.getCities();
-		assertEquals(true, cities.contains(cityTernopil));
-		assertEquals(true, cities.contains(cityKirovsk));
+		Road road = new Road("road", cityTernopil, cityKirovsk);
+		mapService.addRoad(road);
+		assertEquals(true, mapService.removeRoad(road));
+		
+		assertEquals(false, mapService.getRoadsFromCity(road.getCityFrom()).contains(road));
+		assertEquals(false, mapService.getRoadsFromCity(road.getCityTo()).contains(road));
 	}
 	
 	//********************
@@ -220,15 +238,16 @@ public class MapServiceImplTest {
 		City cityTernopil = new City("Ternopil", new Point (118, 218));
 		City cityKirovsk = new City("Kirovsk", new Point (19, 29));
 		City cityMoscow = new City("Moscow", new Point (119, 129));
-		City cityLviv = new City("Lviv", new Point (119, 229));
+		mapService.addCity(cityTernopil);
+		mapService.addCity(cityKirovsk);
+		mapService.addCity(cityMoscow);
+		
 		Road road1 = new Road("road1", cityTernopil, cityKirovsk);
 		Road road2 = new Road("road2", cityMoscow, cityTernopil);
 		Road road3 = new Road("road3", cityKirovsk, cityMoscow);
-		Road road4 = new Road("road4", cityLviv, cityMoscow);
-		mapService.addRoad(road1); // also added cities
-		mapService.addRoad(road2); // also added cities
-		mapService.addRoad(road3); // also added cities
-		mapService.addRoad(road4); // also added cities
+		mapService.addRoad(road1);
+		mapService.addRoad(road2);
+		mapService.addRoad(road3);
 		
 		Set<Road> actual = mapService.getRoadsFromCity(new City("Ternopil3", new Point (5, 5)));
 		assertEquals(new HashSet<Road>(), actual);
@@ -238,13 +257,5 @@ public class MapServiceImplTest {
 		expected.add(road1);
 		expected.add(road2);
 		assertEquals(expected, actual);
-		
-		actual = mapService.getRoadsFromCity(cityMoscow);
-		expected = new HashSet<Road>();
-		expected.add(road2);
-		expected.add(road3);
-		expected.add(road4);
-		assertEquals(expected, actual);
 	}
-
 }

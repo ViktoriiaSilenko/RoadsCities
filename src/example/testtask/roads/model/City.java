@@ -9,8 +9,8 @@ public class City {
 	private Point coordinates;
 	
 	public City(String name, Point coordinates) {
-		Validator.checkNameForContent(name);
 		this.coordinates = requireNonNull(coordinates);
+		Validator.checkNameForContent(name);
 		this.name = name;
 	}
 

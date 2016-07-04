@@ -1,9 +1,7 @@
 package example.testtask.roads.service;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
-
 import java.util.Set;
-
 import example.testtask.roads.model.City;
 import example.testtask.roads.model.Road;
 

@@ -59,14 +59,15 @@ public class MapServiceImpl implements MapService {
 		city = requireNonNull(city);
 		if (cities.remove(city)) {
 			Set<Road> roadsFromCity = getRoadsFromCity(city);
-			
-			for (Road road: roadsFromCity) {
-				removeRoad(road);
+			Road [] roadsFromCityList = roadsFromCity.toArray(new Road[roadsFromCity.size()]);
+			for (Road roadFromCity: roadsFromCityList) {
+			    removeRoad(roadFromCity);
 			}
 			return true;
 		}
 		return false;
 	}
+
 
 	@Override
 	public boolean removeRoad(Road road) {
